@@ -32,7 +32,7 @@ alias bjDiff="diff -Naur"
 alias bjCheat='less ~/cheat'
 alias bjchki='ping google.com -c 3'
 
-function bjImportLibraries()
+function bjImportPlugins()
 {
     if [ -f ${bashLibDir}/load.list ]; then
         for fileName in $(cat ${bashLibDir}/load.list)
