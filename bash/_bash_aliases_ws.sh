@@ -1,5 +1,6 @@
 #!/bin/bash
 
+###################### BIJAY_UTILITY_SCRIPT_STARTS #############################
 ##
 # Shell Script for Bash Aliases loaded on Shell startup through ~/.bash_profile
 #
@@ -57,3 +58,5 @@ function bjp()
 
 # Comment it if you don't want to load the Scripts automatically
 # bjp
+
+###################### BIJAY_UTILITY_SCRIPT_ENDS ###############################
