@@ -1,11 +1,9 @@
 #!/bin/bash
 
 # Load Desktop specific aliases if available.
-if ${isMac}; then
-    # It's a Mac
-
-    if [ -f "${bjHomeDir}/lib/bash/desktop_aliases.sh" ]; then
-        source ${bjHomeDir}/lib/bash/desktop_aliases.sh
+if ${isDesktop}; then
+    if [ -f "${bjHomeDir}/lib/bash/desktopAliases.sh" ]; then
+        source ${bjHomeDir}/lib/bash/desktopAliases.sh
     fi
 fi
 
@@ -46,13 +44,13 @@ function bjImportPlugins()
 
     for projectDir in ${bjHomeDir}/lib/bash/projects/*;
         do
-            # echo "Checking and loading ${projectDir}/bash_aliases_ws.sh"
-            if [ -f "${projectDir}/bash_aliases_ws.sh" ]; then
-                . "${projectDir}/bash_aliases_ws.sh"
+            # echo "Checking and loading ${projectDir}/workstationBashAliases.sh"
+            if [ -f "${projectDir}/workstationBashAliases.sh" ]; then
+                source "${projectDir}/workstationBashAliases.sh"
             fi
 
-            if [ -f "${projectDir}/bash_aliases_common.sh" ]; then
-                . "${projectDir}/bash_aliases_common.sh"
+            if [ -f "${projectDir}/commonBashAliases.sh" ]; then
+                source "${projectDir}/commonBashAliases.sh"
             fi
         done
 }
@@ -119,7 +117,7 @@ HEREDOC
         curl --include --insecure --show-error \
             --output ${outputFile} \
             --dump-header /dev/stdout \
-            --compressed --verbose \
+            --compressed \
             -H "Pragma: ${akamaiHeadersRaw}" \
             -H "Host: ${hostAddress}" \
             -H "User-Agent: ${userAgentHeadersRaw}" \
@@ -148,13 +146,13 @@ function bjSendAkamaiRequests()
     if [ -z ${numIterations} ] ; then
         numIterations=3;
     fi
-    mkdir -p ~/tmp/jabong/response/${folderName};
+    mkdir -p ~/tmp/response/${folderName};
     for ((i=1; i<=${numIterations}; i++))
     do
         echo ${strSeparator}
         echo "Iteration $i for Url: ${url}"
         echo ${strSeparator}
-        outputFile=~/tmp/jabong/response/${folderName}/response-${i}.html
+        outputFile=~/tmp/response/${folderName}/response-${i}.html
         curl -m 10 -D - -o /dev/null -s \
             -H "Accept-Encoding: gzip,deflate,sdch" \
             -H "Pragma: akamai-x-get-cache-key" \

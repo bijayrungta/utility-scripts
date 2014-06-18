@@ -1,4 +1,6 @@
-bash_aliases_accounts
 plugins/svn
 plugins/git
 plugins/php
+plugins/file
+plugins/text
+plugins/github

@@ -1,0 +1,104 @@
+# Handle line endings automatically for files detected as text
+# and leave all files detected as binary untouched.
+* text=auto eol=lf -crlf
+
+################################################################################
+######################## .gitattributes for Text Files #########################
+####### These files are text and should be normalized (convert crlf to lf) #####
+################################################################################
+
+# Web development related extensions
+*.txt   text
+*.php   text diff=php
+*.inc   text diff=php
+*.js    text diff=js
+*.jsb2  text diff=js
+*.json  text diff=js
+*.css   text diff=css
+*.html  text diff=html
+*.tpl   text diff=html
+*.phtml text diff=html
+*.ini   text diff=ini
+*.sql   text diff=ini
+*.xml   text diff=xml
+*.xsd   text diff=xml
+*.wsdl  text diff=xml
+*.htc   text
+
+# Config Files
+*.buildpath text
+*.cnf       text
+*.config    text
+*.example   text
+*.flf       text
+*.gitignore text
+*.htaccess  text
+*.project   text
+*.properties text
+*.template  text
+
+# Scripting.
+*.bat text
+*.sh    text
+*.py    text
+
+# Miscellaneous
+*.csv   text
+*.de    text
+*.htc   text
+*.pt    text
+*.svg   text
+*.pt    text
+*.svg   text
+*.md    text
+
+################################################################################
+####################### .gitattributes for Binary Files ########################
+################################################################################
+# Images should be treated as binary
+# (binary is a macro for -text -diff)
+*.png   binary
+*.jepg  binary
+*.JPEG  binary
+*.jpg   binary
+*.JPG   binary
+*.gif   binary
+*.ico   binary
+
+# Java archives
+*.jar   binary
+*.war   binary
+
+# Compressed files
+*.7z    binary
+*.gz    binary
+*.tar   binary
+*.tbz2  binary
+*.tgz   binary
+*.zip   binary
+
+# PHP Archive
+*.phar  binary
+
+# Font files
+*.cur   binary
+*.ttf   binary
+*.TTF   binary
+*.eot   binary
+*.otf   binary
+*.woff  binary
+
+#
+*.db    binary
+*.swf   binary
+*.pdf   binary
+*.psd   binary
+
+# Miscellaneous
+*.pem   binary
+*.keystore
+*.ser
+
+################################################################################
+############################ End of .gitattributes #############################
+################################################################################

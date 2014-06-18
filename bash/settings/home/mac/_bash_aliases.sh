@@ -32,13 +32,13 @@
 bjHomeDir=$HOME
 bjProjectCode=ws
 isNative=true
-isMac=false      # Set this to false if it's not a Mac.
+isMac=true      # Set this to false if it's not a Mac.
 isGuestOS=false
-isUbuntu13=true
+isUbuntu13=false
 isDesktop=true
 
 # If it's a Guest OS on Virtual Machine, give the name.
-guestHostName="ubuntu-13"
+# guestHostName="ubuntu-13"
 
 function bjp()
 {
@@ -56,4 +56,4 @@ function bjp()
 }
 
 # Comment it if you don't want to load the Scripts automatically
-# bjp
+bjp

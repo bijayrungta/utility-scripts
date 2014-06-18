@@ -70,6 +70,7 @@ here="there"
 
 alias bjCopy='copyToClipboard'
 alias bjPaste='pasteClipboardContent'
+alias bjtype='bjType'
 
 if $isMac; then
     alias bjPaste='pbpaste'
@@ -111,8 +112,8 @@ alias listFiles='find . -type f -maxdepth 1'
 alias home='cd ~/'
 alias h='cd ~/'
 alias cdp='cd $p'
-# alias f="find  . |grep -i"
-alias f="find  . -iname "
+alias f="find  . | grep -i"
+# alias f="find  . -iname "
 alias ggl='ping -c 5 google.com'
 alias nwc="sudo cat /etc/network/interfaces"
 alias p="cd ~/projects"
@@ -175,12 +176,29 @@ fi
 ###############
 ## Functions ##
 ###############
-function rmMatching()
+
+######################
+# Terminal functions #
+######################
+function bjType()
 {
-    printHeader "Will remove following Files matching pattern *$1*"
-    ls *$1*
-    rm *$1*
-    printInfo "### Done ###"
+    command="$1"
+    if [ ! "${command}" ]; then
+        printRaw "Empty Command"
+        return;
+    fi
+    printSeparator
+    type ${command}
+    if [ ! "$(which ${command})" ]; then
+        utilityFunctionInfo="$(bjFindUtilityFunction ${command})"
+        utilityFunctionInfo="${utilityFunctionInfo%:*}"
+        utilityFunctionFile="${utilityFunctionInfo%:*}"
+        utilityFunctionLine="${utilityFunctionInfo##*:}"
+        if [ "${utilityFunctionFile}" ]; then
+            printInfo "${command} is a alias/function defined in file '${utilityFunctionFile}' at line '${utilityFunctionLine}'"
+            $bjGuiEditor "${utilityFunctionFile}"
+        fi
+    fi
 }
 
 function bjClearScreen()
@@ -206,10 +224,31 @@ function ispeed()
 
 function bjCopyFilesRecursivelyWithExtension()
 {
+    destinationDir="$2"
+    tmpFile="/tmp/$(pfx noDate)_tmpListFiles.txt"
     if [ ${1} ]; then
-        find . -type f ${permissionOptions} -iname "*.$1" -exec bjCopyFileRecursively {} \;
+        printRaw "List Files at ${tmpFile}"
+        printDryRunCommand "find . -type f -iname '*.$1' -exec /bin/ls -1 {} \; > ${tmpFile}"
+        find . -type f -iname "*.$1" -exec /bin/ls -1 {} \; > ${tmpFile}
+        jbCopyFilesRecursivelyFromList ${tmpFile} ${destinationDir}
     fi
-    printInfo "Done with fixing File Permissions for extension '$1'"
+    printInfo "Done with copying all Files found to '${destinationDir}"
+}
+
+function bjCopyFilesRecursivelyFromList()
+{
+    fileList="$1"
+    destinationDir="$2"
+    while read -r fileToCopy
+    do
+        if [ "${fileToCopy}" ]; then
+            printDryRunCommand "bjCopyFilesRecursively ${fileToCopy} ${destinationDir}"
+            bjCopyFilesRecursively ${fileToCopy} ${destinationDir}
+        fi
+    done < ${fileList}
+    printInfo "Done with copying all Files found to '${destinationDir}"
+    find ${destinationDir} -type f
+    printInfo "Done with copying all Files found to '${destinationDir}"
 }
 
 function bjCopyFilesRecursively()
@@ -218,10 +257,10 @@ function bjCopyFilesRecursively()
     destinationDir="$2"
     sourceDir="."
     if [ ! -d ${destinationDir} ]; then
-        printInfo "'${destinationDir}' is Not a valid Directory"
+        printInfo "${destinationDir} is Not a valid Directory"
         return;
     fi
-    if [ ${3} ]; then
+    if [ "${3}" ]; then
         sourceDir="$3"
     fi
     if [ ! -f "${sourceDir}/${fileToCppy}" ]; then
@@ -229,14 +268,14 @@ function bjCopyFilesRecursively()
         return;
     fi
     relativeDestinationDir="$(dirname ""${fileToCppy}"")"
-    if [ "${relativeDestinationDir}" -eq "." ]; then
-        cp -R "${sourceDir}/${fileToCppy}"
+    if [ "${relativeDestinationDir}" = "." ]; then
+        # printDryRunCommand "cp -R "${sourceDir}/${fileToCppy}" "${destinationDir}/""
         cp -R "${sourceDir}/${fileToCppy}" "${destinationDir}/"
     else
-        printDryRunCommand "mkdir -p ""${destinationDir}/${relativeDestinationDir}"""
-        # mkdir -p "${destinationDir}/${relativeDestinationDir}"
-        printDryRunCommand "cp -R ""${sourceDir}/${fileToCppy}"" ""${destinationDir}/${relativeDestinationDir}/"""
-        # cp -R "${sourceDir}/${fileToCppy}" "${destinationDir}/${relativeDestinationDir}/"
+        # printDryRunCommand "mkdir -p ""${destinationDir}/${relativeDestinationDir}"""
+        mkdir -p "${destinationDir}/${relativeDestinationDir}"
+        # printDryRunCommand "cp -R ""${sourceDir}/${fileToCppy}"" ""${destinationDir}/${relativeDestinationDir}/"""
+        cp -R "${sourceDir}/${fileToCppy}" "${destinationDir}/${relativeDestinationDir}/"
     fi
 }
 
@@ -274,6 +313,52 @@ function bjFindAllFileTypes()
     find . -type f | perl -ne 'print $1 if m/\.([^.\/]+)$/' | sort -u
     # find . -type f -name "*.*" | awk -F. '!a[$NF]++{print $NF}'
 }
+
+function bjListAllFiles()
+{
+    if [ "${1}" ]; then
+        listFile=$1
+        find . -type f > ${listFile}
+    else
+        find . -type f
+    fi
+}
+
+function bjPromptForConfirmation()
+{
+    confirmed=false
+    message="$1"
+    defaultValue="$2"
+    if [ -z ${ide} ]; then
+        defaultValue=n # Set Default Value
+    fi
+    response="${defaultValue}"
+    printf "${message}? y/n: "
+    read response
+
+    if [ "${response}" == "y" -o "${response}" == "Y" ] ; then
+        confirmed=true
+        return 0;
+    fi
+    return 1
+}
+
+function testPrompt()
+{
+    bjPromptForConfirmation "Go ahead"
+    if ${confirmed} ; then
+        echo 'Confirmed'
+    else
+        echo "Not Confirmed"
+    fi
+    return;
+    if $(bjPromptForConfirmation "Do"); then
+        echo "Yes"
+    else
+        echo "No"
+    fi
+}
+
 ###############################
 # Clipboard related functions #
 ###############################
@@ -809,7 +894,18 @@ function pfx()
     if [ ! -z $1 ]; then
         separator=""
     fi
-    pfx=`date +%Y-%m-%d_%H-%M-%S`
+
+    case "$1" in
+        dateOnly)
+            pfx=`date +%Y-%m-%d`
+            separator=""
+        ;;
+
+        *)
+            pfx=`date +%Y-%m-%d_%H-%M-%S`
+        ;;
+    esac
+
     pfx="${pfx}${separator}"
     echo $pfx
 }
@@ -848,15 +944,16 @@ function bjphpfr()
 {
     findPattern=$1
     replacePattern=$2
-    path=$3
 
-    if [ -z $path ] ; then
-        path=./
+    if [ "$pathToReplace" ] ; then
+        pathToReplace=$3
     else
         isFinal=1;
     fi
 
-    grep --recursive --no-messages --files-with-matches --extended-regexp --include=*.php -e '$findPattern' $path | xargs sed -i 's/$findPattern/$replacePattern/g'
+    grep --recursive --no-messages --files-with-matches \
+        --extended-regexp --include=*.php \
+        -E '$findPattern' $path | xargs sed -i "s/${findPattern}/${replacePattern}/g"
 }
 
 function detectAndClean()
@@ -1264,14 +1361,12 @@ function findAliasDefinition()
     grep --color=always -n -C 1 -R -E "function $1" ${bashLibDir}
 }
 
-function bjFindUtilityScripts()
+function bjFindUtilityFunction()
 {
-    printHeader "Find Alias or Function named $1 in Utility Scripts"
-    grep --color=always -n -C 1 -R -E "(function|alias) $1" ${bashLibDir}
-    printInfo "Done"
+    grep -n -R -E "(function|alias) $1" ${bashLibDir};
 }
 
-function bjFindUtilityScriptsOccurances()
+function bjFindUtilityScript()
 {
     printHeader "Find Occuarances of $1 in Utility Scripts"
     grep --color=always -n -C 1 -R -E "$1" ${bashLibDir}
@@ -1324,14 +1419,21 @@ function bjFilePath()
         if [ -z "$1" ]; then
             filePath=$(pwd)
         else
-            filePath="$(pwd)/$1"
+            fileDir=$(pwd)
+            if [ -e "$2" ]; then
+                fileDir="$2"
+            fi
+            filePath="${fileDir}/$1"
         fi
     fi
-    printf "${filePath}"
 
-    if [ ! -z ${2} ]; then
+    if [ "copy" = "${2}" ]; then
+        printInfo "File Path is '${filePath}'"
         pasteClipboardContent
         copyToClipboard "${filePath}"
+    else
+        # printInfo "File Path is '${filePath}'"
+        echo "${filePath}"
     fi
 }
 
@@ -1642,7 +1744,8 @@ function printDryRunCommand()
 
 function printSeparator()
 {
-    echo $strSeparator
+    printChars 100 '#' newLine
+    # echo $strSeparator
 }
 
 function md5()
@@ -1663,3 +1766,11 @@ function testScript()
     printInfo "baseName: ${baseName}"
     printInfo "outputFile: ${outputFile}"
 }
+
+function bjSortFileEntries()
+{
+    fileName="$1"
+    cp $fileName $fileName.bkp
+    cat $fileName.bkp | sort | uniq > $fileName
+}
+
