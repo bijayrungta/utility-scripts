@@ -50,12 +50,10 @@ function bjGithubChangePullRequest()
         prepareBranch="$2"
     fi
     title="Updating Pull Request Base Branch to ${prepareBranch}"
-    origin="jabong"
-    repo="INDFAS"
     curl --user "${githubUser}":"${githubPassword}" \
      --request PATCH \
-     --data "{'title': '${title}','head': '${origin}:${prepareBranch}', 'base': '${prepareBranch}'}" \
-     https://api.github.com/repos/${origin}/${repo}/pulls
+     --data "{'title': '${title}','head': '${githubRepoOwner}:${prepareBranch}', 'base': '${prepareBranch}'}" \
+     https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/pulls
 }
 
 function bjGitResetGithubAlias()
