@@ -1,7 +1,17 @@
-# Handy Keyboard Shortcuts
+# Handy Keyboard Shortcuts for Mac OSX
+
+### Basic Shortcuts
+    Source: http://www.w3schools.com/tags/ref_keyboardshortcuts.asp
+
+Action          | Shortcut
+:---------------|:----------------|
+File menu       | Control + F2 + F
+Edit menu       | Control + F2 + E
+View menu       | Control + F2 + V
+----------------------------------------------------------
 
 ### Skype
-- https://support.skype.com/en/faq/FA12074/what-keyboard-shortcuts-can-i-use-with-skype-for-mac-os-x
+    Source: https://support.skype.com/en/faq/FA12074/what-keyboard-shortcuts-can-i-use-with-skype-for-mac-os-x
 
 Action                          | Shortcut
 :-------------------------------|:------------------------|
