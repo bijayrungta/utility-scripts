@@ -40,6 +40,41 @@ exit 1
 # Install openssh so that you can connect from other machine.
 sudo apt-get install ssh openssh-server openssh-blacklist openssh-blacklist-extra rssh openssh-client screen
 
+# Install light weight utilities for file editing
+sudo apt-get install vim vim-scripts vim-doc
+
+# Install utilities for File Compression and Extraction
+sudo apt-get install rar unrar gzip
+
+# Install LAMP: Apache, MySQL, phpMyAdmin, PHP, PEAR.
+sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server phpmyadmin \
+    mysql-client apache2-doc php-pear tinyca libapache2-mod-auth-mysql php5-mysql
+
+# Install commonly used PHP Extensions
+sudo apt-get install php5-cli php5-curl php5-tidy php5-xdebug php5-ldap php5-xmlrpc php5-imagick php5-xhprof
+
+# Install Memcache and its PHP Libraries
+# http://blog.chrismeller.com/configuring-and-optimizing-php-fpm-and-nginx-on-ubuntu-or-debian
+sudo apt-get install memcached php5-memcache php5-memcached
+
+# Install PHP-FPM
+sudo apt-get install php5-fpm php5-mcrypt php5-mysqlnd php5-sqlite
+
+# Install GIT and other Version Control Tools
+sudo apt-get install git mercurial git-cvs git-svn meld regexxer
+
+# Install CVS and SVN and related Tools
+sudo apt-get install cvs subversion subversion-tools patchutils
+
+# Install GIT GUI Tools
+sudo apt-get install gitg git-gui gitk meld kfilereplace regexxer
+
+# Install CVS and SVN and related GUI Tools
+sudo apt-get install tkcvs cervisia kdesvn
+
+# Enable Apache Modules for rewrite,
+sudo a2enmod rewrite
+
 # Install Kubuntu Desktop (This will install general tools bundled with kde version of Ubuntu. Some of them are very useful)
 # This will need to download more than 500 MB of Data.
 sudo apt-get install kubuntu-desktop
@@ -50,28 +85,12 @@ sudo apt-get install konqueror konqueror-plugin-gnash konqueror-plugin-searchbar
 # Install Chat Softwares: Skype and Pidgin, Canonical Partners is needed for Skype.
 sudo apt-get install skype pidgin pidgin-skype
 
-# Install light weight utilities for file editing
-sudo apt-get install vim vim-scripts vim-doc
-
-# Install utilities for File Compression and Extraction
-sudo apt-get install rar unrar gzip mysql-admin
-
 # Install Utilities
 sudo apt-get install htop xclip lynx gimp imagemagick
 
 # Install Curl, Java etc needed for other Software.
 # Note: You should probably install latest Java version 7. This installs 1.6
 sudo apt-get install curl sun-java6-bin sun-java6-jdk
-
-# Install LAMP: Apache, MySQL, phpMyAdmin, PHP, PEAR.
-sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server phpmyadmin \
-    mysql-client apache2-doc php-pear tinyca libapache2-mod-auth-mysql php5-mysql
-
-# Install commonly used PHP Extensions
-sudo apt-get install php5-curl php5-tidy php5-xdebug php5-ldap php5-xmlrpc php5-imagick php5-xhprof
-
-# Enable Apache Modules for rewrite,
-sudo a2enmod rewrite
 
 # Apache Configuration to avoid ServerName Error when starting Apache2
 # http://askubuntu.com/questions/329323/problem-with-restarting-apache2
@@ -92,15 +111,6 @@ sudo service apache2 restart
 # post_max_size = 128M
 # upload_max_filesize = 64M
 # error_reporting = E_ALL & ~E_DEPRECATED
-
-# Install Memcache and its PHP Libraries
-sudo apt-get install memcached php5-memcache php5-memcached
-
-# Install GIT and other Version Control Tools
-sudo apt-get install git mercurial gitg git-cvs git-svn git-gui gitk meld kfilereplace regexxer
-
-# Install CVS and SVN and related Tools
-sudo apt-get install cvs tkcvs cervisia subversion subversion-tools patchutils kdesvn
 
 # To install Subversion version 1.7.x, which has some advanced tools, do this:
 # @see http://kovshenin.com/2013/subversion-1-7-on-ubuntu-12-04/
