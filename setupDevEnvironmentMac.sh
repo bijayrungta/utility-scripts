@@ -24,8 +24,7 @@
 ##
 
 ##
-# Development Environment for LAMP in Ubuntu.
-# OS: Install a latest 64 bit version of Ubuntu LTS (Currently Ubuntu 12.04)
+# Development Environment for LAMP in Mac OSX.
 # You can install any version actually. But these Scripts have been written after test on Ubuntu 12.04
 #
 # Softwares: Install the following Softwares.
@@ -37,9 +36,14 @@
 echo "CAUTION: You should not run this script directly. It is advised to run individual Scripts."
 exit 1
 
-# Install brew
+# Install Brew
+# http://brew.sh/
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+# Xcode command line tools.
 xcode-select --install
+
+# Brew Packages:
 brew install wget watch gnu-sed coreutils fortune aspell htop
 brew install git
 brew install bash bash-completion
@@ -47,34 +51,55 @@ brew install bash bash-completion
 # Not sure about below:
 brew install autoconf libtiff nspr erlang unixodbc jpeg freetype
 
-brew install memcached memcache-top
+brew install gettext
+
+# Brew Packages for PHP and Mysql:
+brew install mysql php54 python sqlite zlib mcrypt htop-osx
+
+# Brew Packages for PHP tools:
+brew install composer
+brew install php-code-sniffer php-cs-fixer
+
+# Brew Packages for Memcache and Couchbase.
+brew install memcached memcache-top php54-memcache
 brew install couchdb
 
-brew install gettext
-brew install node
-brew install mysql
+brew install gdbm jpeg libpng openssl readline unixodbc
 
-# Python and essentials
+#################
+# Node Packages #
+#################
+
+# Install Node
+# @see http://stackoverflow.com/questions/5056115/how-to-install-latest-version-of-node-using-brew
+brew install node
+
+# Brew Packages for Node tools
+brew install phantomjs
+
+# Brew Packages for Java tools
+brew install maven
+
+################################################################################
+############################ Python and essentials #############################
+################################################################################
 brew install python brew-pip
 
 # Some Python dependencies.
 # http://apple.stackexchange.com/questions/169601/no-package-libffi-found-in-homebrew-virtual-environment
 brew install libffi
 
-# PHP and essentials
-brew install php54
-brew install php54-memcache composer
-
-brew install php-code-sniffer php-cs-fixer
+# Python Packages:
+pip install awscli jira
+pip install --pre github3.py
 
 # Install python Packages
 pip install awscli gitdb readline uritemplate docutils GitPython
-
-pip install jira
-pip install --pre github3.py
-
 pip install unicodecsv
 
+#######################
+# Mac OSX Preferences #
+#######################
 # http://osxdaily.com/2011/08/01/turn-off-resume-per-app-in-mac-os-x-lion/
 # Disable Resuming/Restoring of Windows for various Apps.
 defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -bool false
