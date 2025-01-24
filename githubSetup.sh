@@ -29,14 +29,14 @@ function doValidateEmail()
     IFS="@"
     set -- $userEmail
     if [ "${#@}" -ne 2 ]; then
-        printf "ERROR !! NOTE : \n please enter your jabong.com email id"
+        printf "ERROR !! NOTE: \n please enter your official email id"
         exit
     fi
     domain="$2"
-    if [ "$domain" = "jabong.com" ] ; then
+    if [ "$domain" = "example.com" ] ; then
         ok="email-id is ok"
     else
-        printf "ERROR !! NOTE : \n please enter your jabong.com email id"
+        printf "ERROR !! NOTE: \n please enter your official email id"
         exit
     fi
 }
